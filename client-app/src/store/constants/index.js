@@ -1,0 +1,2 @@
+export const ADD_SOCKET_MESSAGE = "ADD_SOCKET_MESSAGE";
+export const SET_USERNAME = "SET_USERNAME";
