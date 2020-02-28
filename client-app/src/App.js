@@ -1,53 +1,55 @@
 import React, { useEffect, useRef } from 'react';
+import { useConnect } from './hooks';
 import ChatInput from './components/ChatInput';
 import ChatMessage from './components/ChatMessage';
-import ChatHeader from "./components/ChatHeader";
-import { useConnect } from "./hooks";
+import ChatHeader from './components/ChatHeader';
 import './Chat.css';
 
 const URL = 'ws://localhost:3030';
+const CLASS_CHAT = 'chat';
+const CLASS_CHAT_MESSAGES = 'chat-messages';
 
 function App() {
   const msgWrapRef = useRef(null);
 
   const {
-    cahtData,
-    addMessageToStore,
-    setUserNameToStore,
+    chatData,
+    addSocketMessage,
+    setUserName,
     sendMessage
   } = useConnect(URL);
 
   useEffect(() => {
     if (msgWrapRef.current != null)
       msgWrapRef.current.scrollTop = msgWrapRef.current.scrollHeight;
-  }, [cahtData])
+  }, [chatData])
 
   const submitMessage = messageString => {
     const message = {
-      name: cahtData.name,
+      name: chatData.name,
       message: messageString,
       date: new Date().toISOString()
     }
-    sendMessage(JSON.stringify(message));
-    addMessageToStore(message);
+    sendMessage(message);
+    addSocketMessage(message);
   }
 
   return (
-    <div className="chat">
+    <div className={CLASS_CHAT}>
       <ChatHeader
-        name={cahtData.name}
-        setUserNameToStore={setUserNameToStore}
+        name={chatData.name}
+        setUserNameToStore={setUserName}
       />
-      <div ref={msgWrapRef} className="chat-messages">
-        {cahtData.messages.map((message, index) =>
+      <div ref={msgWrapRef} className={CLASS_CHAT_MESSAGES}>
+        {chatData.messages.map((message, index) =>
           <ChatMessage
             key={index}
             message={message.message}
             name={message.name}
             date={new Date(message.date)}
-            myName={cahtData.name}
-          />)
-        }
+            myName={chatData.name}
+          />
+        )}
       </div>
       <ChatInput
         onSubmitMessage={submitMessage}

@@ -1,18 +1,17 @@
-import { combineReducers } from "redux";
-import { ADD_SOCKET_MESSAGE, SET_USERNAME } from "../constants";
+import { combineReducers } from 'redux';
+import { ADD_SOCKET_MESSAGE, SET_USERNAME } from '../constants';
 
-const messageState = {
+const defaultMessageState = {
     name: 'Bob',
     messages: [],
 }
 
-const message = (state = messageState, action) => {
+const chat = (state = defaultMessageState, action) => {
     switch (action.type) {
         case ADD_SOCKET_MESSAGE:
-            const msg = state.messages;
-            msg.push(action.payload);
             return {
-                ...state, messages: msg
+                ...state,
+                messages: [...state.messages, action.payload]
             };
 
         case SET_USERNAME:
@@ -26,6 +25,4 @@ const message = (state = messageState, action) => {
     }
 }
 
-export default combineReducers({
-    message
-});
+export default combineReducers({ chat });

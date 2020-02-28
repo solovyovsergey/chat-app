@@ -1,7 +1,7 @@
 import {
     ADD_SOCKET_MESSAGE,
     SET_USERNAME
-} from "../constants";
+} from '../constants';
 
 export function addSocketMessage(message) {
     return {
